@@ -18,12 +18,18 @@ public class DrawCommand implements Streamable {
     int x;
     int y;
     int rgb;
+    String textMessage;//add
 
     public DrawCommand() { // needed for streamable
     }
 
     DrawCommand(byte mode) {
         this.mode=mode;
+    }
+    //add send message
+     DrawCommand(byte mode,String textMessage) {//add
+        this.mode=mode;
+        this.textMessage=textMessage;
     }
 
     DrawCommand(byte mode, int x, int y, int rgb) {
@@ -39,6 +45,7 @@ public class DrawCommand implements Streamable {
         out.writeInt(x);
         out.writeInt(y);
         out.writeInt(rgb);
+        out.writeBytes(textMessage);//add
     }
 
     public void readFrom(DataInput in) throws Exception {
@@ -46,6 +53,7 @@ public class DrawCommand implements Streamable {
         x=in.readInt();
         y=in.readInt();
         rgb=in.readInt();
+        textMessage = in.readLine();/add
     }
 
 
