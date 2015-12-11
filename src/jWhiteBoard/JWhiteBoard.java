@@ -621,6 +621,25 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 					Color.BLACK);
 			drawColor = cbrush;
         }
+        else if ("Background".equals(command)) {
+			colorButton2.setVisible(true);
+			colorButton1.setVisible(false);
+			BrSize.setVisible(false);
+			cmb.setVisible(false);
+	}
+	else if ("Color Background".equals(command)) {
+			Color cbackground = JColorChooser.showDialog(null, "Choose Background Color", Color.white);
+			Point p = mainFrame.getLocation();
+			mainFrame.dispose();
+			backgroundColor = cbackground;
+			try {
+				go();
+				mainFrame.setLocation(p);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+	}
         else
             System.out.println("Unknown action");
     }
