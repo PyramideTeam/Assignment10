@@ -567,7 +567,22 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
         else if("Leave".equals(command)) {
             stop();
         }
-        
+        else if (e.getSource()==joinButton) {
++		String d = "";
++		d = txtGroup.getText();
++             groupName=d;
++             if(!noChannel && !useState){
++            	 try {
++            		 channel.disconnect();
++                     channel.connect(groupName);
++				} catch (Exception e2) {
++					// TODO: handle exception
++					
++				}
++            	 System.out.println(groupName);
++                 setTitle(groupName);
++             }
++	}
         else if ("Brush".equals(command)) {
 			colorButton1.setVisible(true);
 			BrSize.setVisible(true);
