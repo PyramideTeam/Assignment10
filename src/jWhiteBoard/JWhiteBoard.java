@@ -463,7 +463,16 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
             e.printStackTrace();
         }
     }
-
+    // send Message
+	public void appendTextMessage(DrawCommand comm) {
+		String textMessage = comm.textMessage;
+		System.out.print(comm.textMessage);
+		if (check == false) {
+			txaMessage.append("\n"+textMessage);
+		}else{
+			check=false;
+		}
+	}
     /**
      * Execute when new member join or leave Group
      */
@@ -550,6 +559,19 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
             System.err.println(ex);
         }
     }
+    // send Message
+	public void sendTextMessage(String textMessage) {
+		DrawCommand comm = new DrawCommand(DrawCommand.TEXT, textMessage);
+		try {
+			byte[] buf = Util.streamableToByteBuffer(comm);
+			if (use_unicasts)
+				sendToAll(buf);
+			else
+				channel.send(new Message(null, null, buf));
+		} catch (Exception ex) {
+			System.err.println(ex);
+		}
+	}
 
 
     /**
@@ -566,7 +588,12 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
         }
         else if("Leave".equals(command)) {
             stop();
-        }
+        }else if (e.getSource() == sendButton) {
+			check = true;
+			txaMessage.append("\n[This PC][" + channel.getAddress() + "]: " + txtSend.getText());
+			sendTextMessage("[" + channel.getAddress() + "]: " + txtSend.getText());
+			txtSend.setText("");
+		}
         else if (e.getSource()==joinButton) {
 +		String d = "";
 +		d = txtGroup.getText();
