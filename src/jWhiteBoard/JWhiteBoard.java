@@ -800,18 +800,18 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
          * at the same time.
          */
         public void drawPoint(DrawCommand c) {
-            if(c == null || gr == null) 
-            	return;
-            Color col=new Color(c.rgb);
-            gr.setColor(col);
-            gr.fillOval(c.x, c.y, 10, 10);
-            repaint();
-            if(state != null) {
-                synchronized(state) {
-                    state.put(new Point(c.x, c.y), col);
-                }
-            }
-        }
+			if (c == null || gr == null)
+				return;
+			Color col = new Color(c.rgb);
+			gr.setColor(col);
+			gr.fillOval(c.x, c.y, c.brushSize, c.brushSize);
+			repaint();
+			if (state != null) {
+				synchronized (state) {
+					state.put(new Point(c.x, c.y), col);
+				}
+			}
+		}
 
 
         /**
