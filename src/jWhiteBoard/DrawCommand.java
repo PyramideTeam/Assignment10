@@ -14,11 +14,13 @@ import java.io.DataOutput;
 public class DrawCommand implements Streamable {
     static final byte DRAW=1;
     static final byte CLEAR=2;
+    static final byte TEXT=3;//add
     byte mode;
     int x;
     int y;
     int rgb;
     String textMessage;//add
+    int brushSize;//add
 
     public DrawCommand() { // needed for streamable
     }
@@ -37,14 +39,22 @@ public class DrawCommand implements Streamable {
         this.y=y;
         this.rgb=rgb;
     }
+    DrawCommand(byte mode, int x, int y, int rgb, int brushSize) {//add brushSize
+        this.mode=mode;
+        this.x=x;
+        this.y=y;
+        this.rgb=rgb;
+        this.brushSize= brushSize;
 
+    }
 
     public void writeTo(DataOutput out) throws Exception {
         out.writeByte(mode);
         out.writeInt(x);
         out.writeInt(y);
         out.writeInt(rgb);
-        out.writeBytes(textMessage);
+        out.writeInt(brushSize);//add
+        out.writeChars(textMessage);
     }
 
     public void readFrom(DataInput in) throws Exception {
@@ -52,6 +62,7 @@ public class DrawCommand implements Streamable {
         x=in.readInt();
         y=in.readInt();
         rgb=in.readInt();
+        brushSize=in.readInt();//add
         textMessage = in.readLine();
     }
 
