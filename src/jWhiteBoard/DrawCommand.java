@@ -25,6 +25,10 @@ public class DrawCommand implements Streamable {
     public DrawCommand() { // needed for streamable
     }
 
+    public String gettextMessage() {
+    	return textMessage;
+    }
+
     DrawCommand(byte mode) {
         this.mode=mode;
     }
@@ -33,12 +37,6 @@ public class DrawCommand implements Streamable {
         this.textMessage=textMessage;
     }
 
-    DrawCommand(byte mode, int x, int y, int rgb) {
-        this.mode=mode;
-        this.x=x;
-        this.y=y;
-        this.rgb=rgb;
-    }
     DrawCommand(byte mode, int x, int y, int rgb, int brushSize) {//add brushSize
         this.mode=mode;
         this.x=x;
