@@ -42,6 +42,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 			joinButton;// add some Button
 	private JLabel brushSize, BrPx, BrSize, groupLabel;// Label brush
 	private JComboBox cmb;
+	private static int sizeBrush = 5; // size brush default
 	private final Random random = new Random(System.currentTimeMillis());
 	private final Font defaultFont = new Font("Helvetica", Font.PLAIN, 12);
 	private Color drawColor = selectColor();
@@ -54,6 +55,15 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 	protected boolean send_own_state_on_merge = true;
 	private final List<Address> members = new ArrayList<Address>();
 
+	// ---------setSizeBrush--------- //
+	private static void setSizeBrush(int SizeBrush) {
+		sizeBrush = SizeBrush;
+	}
+	
+	// ---------getSizeBrush--------- //
+	public int getSizeBrush() {
+		return sizeBrush;
+	}
 	/**
 	 * Constructor 1
 	 * 
@@ -607,7 +617,11 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 				e1.printStackTrace();
 			}
 
-		} else
+		}
+		else if (e.getSource() == cmb) {
+			setSizeBrush(cmb.getSelectedIndex() + 5);
+		}
+		else
 			System.out.println("Unknown action");
 	}
 
@@ -636,7 +650,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 			return;
 		for (Point point : copy.keySet()) {
 			// we don't need the color: it is our draw_color anyway
-			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, point.x, point.y, drawColor.getRGB());
+			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, point.x, point.y, drawColor.getRGB(), sizeBrush);
 			try {
 				byte[] buf = Util.streamableToByteBuffer(comm);
 				if (use_unicasts)
@@ -806,8 +820,7 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 		 */
 		public void mouseDragged(MouseEvent e) {
 			int x = e.getX(), y = e.getY();
-			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, x, y, drawColor.getRGB(),
-					Integer.parseInt(cmb.getSelectedItem().toString()));// add
+			DrawCommand comm = new DrawCommand(DrawCommand.DRAW, x, y, drawColor.getRGB(), sizeBrush); //add SizeBrush
 
 			if (noChannel) {
 				drawPoint(comm);
