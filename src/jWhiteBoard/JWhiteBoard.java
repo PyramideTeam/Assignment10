@@ -570,11 +570,8 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 			stop();
 		}
 		else if (e.getSource() == sendButton) {
-			check = true;
-			txaMessage.append("\n[This PC][" + channel.getAddress() + "]: " + txtSend.getText());
 			sendTextMessage("[" + channel.getAddress() + "]: " + txtSend.getText());
 			txtSend.setText("");
-			
 		}
 		else if (e.getSource()==joinButton) {
             		String d = txtGroup.getText();
