@@ -392,7 +392,8 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 			mainFrame.setTitle(title);
 		} else {
 			if (channel.getAddress() != null)
-				tmp += channel.getAddress();
+				tmp += getGroupName() + "-";
+			tmp += channel.getAddress();
 			tmp += " (" + memberSize + ")";
 			mainFrame.setTitle(tmp);
 		}
@@ -558,36 +559,28 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 		} else if ("Leave".equals(command)) {
 			stop();
 		}
-		// else if("Send".equals(command)) {
-		// String sTmp="";
-		// sTmp=txtSend.getText();
-		// txaMessage.append(sTmp);
-		// System.out.println("OK");
-		// }
 		else if (e.getSource() == sendButton) {
 			check = true;
 			txaMessage.append("\n[This PC][" + channel.getAddress() + "]: " + txtSend.getText());
 			sendTextMessage("[" + channel.getAddress() + "]: " + txtSend.getText());
 			txtSend.setText("");
 			
-		} else if (e.getSource()==joinButton) {
-			 String d= JOptionPane.showInputDialog(null, "Please Input Group Name");
-             if(d==null){
-                    JOptionPane.showMessageDialog(null, "Please Input Group Name");
-                    channel.disconnect();
-             }
-             groupName=d;
-             if(!noChannel && !useState){
-            	 try {
-            		 channel.disconnect();
-                     channel.connect(groupName);
+		}
+		else if (e.getSource()==joinButton) {
+            		String d = txtGroup.getText();
+            		groupName=d;
+            		if (!noChannel && useState)
+           	 		try {
+           		 		channel.disconnect();
+                 			channel.connect(groupName);
 				} catch (Exception e2) {
 					// TODO: handle exception
-					
+					e2.printStackTrace();
 				}
-            	 System.out.println(groupName);
-                 setTitle(groupName);
-             }
+           	 	System.out.println(groupName);
+                	setTitle(channel.getAddress()+" (" +memberSize +") " +" Group: "+groupName);
+            
+		}
 		} else if ("Brush".equals(command)) {
 			colorButton1.setVisible(true);
 			BrSize.setVisible(true);
@@ -903,7 +896,19 @@ public class JWhiteBoard extends ReceiverAdapter implements ActionListener, Chan
 				g.drawImage(img, 0, 0, null);
 			}
 		}
-
+		public void functionSetTitle() {
+			System.out.println("Set title");
+			setGroupName(txtGroup.getText());
+			if (!noChannel && !useState)
+				try {
+					channel.disconnect();
+					channel.connect(groupName);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			setTitle();
+	}
 	}
 
 }
